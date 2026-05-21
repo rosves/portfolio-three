@@ -1,0 +1,179 @@
+/* ─────────────────── SECTION 3 — Projets ───────────────────────── */
+.projects {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Canvas WebGL en background absolu */
+#projects-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Contenu HTML au-dessus du canvas */
+.projects > .section-head,
+.projects > .proj-grid {
+  position: relative;
+  z-index: 1;
+}
+
+/* GRILLE 3 colonnes × 2 lignes */
+.proj-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-right: 0;
+}
+
+/* CARD */
+.proj-card {
+  position: relative;
+  padding: 32px 30px 30px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+.proj-card:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* Effet de cadre au hover */
+.proj-card::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
+  pointer-events: none;
+}
+.proj-card:hover::after { border-color: var(--ink); }
+
+/* Au hover : numéro et flèche passent en cyan */
+.proj-card:hover .proj-num { color: var(--accent); }
+.proj-card:hover .proj-arrow {
+  color: var(--accent);
+  transform: translate(4px, -4px);
+}
+
+/* HAUT DE CARD : numéro + tag */
+.proj-row-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.proj-num {
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: 72px;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+
+.proj-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+}
+
+/* CORPS DE CARD */
+.proj-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.proj-title {
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.proj-sub {
+  font-family: var(--grot);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+
+.proj-desc {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  max-width: 38ch;
+}
+
+/* PIED DE CARD : année + flèche */
+.proj-foot {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.proj-year {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--ink-dim);
+}
+
+.proj-arrow {
+  font-family: var(--sans);
+  font-size: 18px;
+  color: var(--ink-dim);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* RESPONSIVE  */
+@media (max-width: 1100px) {
+  .proj-grid { grid-template-columns: repeat(2, 1fr); }
+  .proj-num  { font-size: 56px; }
+  .proj-title { font-size: 26px; }
+}
+
+@media (max-width: 700px) {
+  .proj-grid { grid-template-columns: 1fr; }
+  .proj-card { min-height: 280px; padding: 24px 22px; }
+  .proj-num  { font-size: 48px; }
+}
