@@ -61,6 +61,7 @@
   .section {
     padding: 60px 22px;
   }
+
   .section-head {
     flex-direction: column;
     align-items: flex-start;

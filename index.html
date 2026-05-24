@@ -14,6 +14,170 @@
     />
   </head>
   <body>
+    <!-- ============ SECTION 2 — Portfolio (Elias) ============ -->
+    <section class="section" id="Config">
+      <div class="section-head">
+        <span class="section-num">
+          <span class="dot"></span>
+          <span>02 / Index</span>
+        </span>
+        <h2 class="section-title">L'<em>artisanat</em><br />avant l'effet.</h2>
+      </div>
+
+      <div class="about">
+        <!-- la section de gauche -->
+        <div class="about_left">
+          <p class="about_text">
+            Neuf ans à construire des interfaces pour des institutions
+            culturelles, la fintech et des studios indépendants — un travail
+            enraciné dans la <em>précision</em>, la typographie, et la
+            discipline du retrait.
+          </p>
+          <p class="about_detail">
+            J'écris du code de production, dessine des shaders et livre des
+            choses qui tiennent en plein jour. Je fais confiance à l'artisanat,
+            aux délais et au système métrique. Actuellement en freelance depuis
+            Lisbonne, disponible dans le monde entier.
+          </p>
+          <p class="about_detail">
+            Clients sélectionnés — Tate, Stripe, Linear, Arc, Mubi, Field,
+            Pentagram, A24.
+          </p>
+
+          <!-- skill section -->
+          <div class="about_skills">
+            <div class="skill">
+              <p>Three / WebGL</p>
+              <span>09A</span>
+            </div>
+            <div class="skill">
+              <p>React / TS</p>
+              <span>09A</span>
+            </div>
+            <div class="skill">
+              <p>Shaders GLSL</p>
+              <span>05A</span>
+            </div>
+            <div class="skill">
+              <p>Motion</p>
+              <span>07A</span>
+            </div>
+            <div class="skill">
+              <p>Design Système</p>
+              <span>06A</span>
+            </div>
+            <div class="skill">
+              <p>Direction Typo</p>
+              <span>04A</span>
+            </div>
+          </div>
+        </div>
+        <!-- Configurateur  -->
+        <div class="about_stage">
+          <div class="astro_square">
+            <div class="stage_hud">
+              <div class="live">SUJET — Aperçu en direct</div>
+              <div>MESH 0x4A2C · 1,408 polys</div>
+            </div>
+            <!-- Canvas astronaute -->
+            <canvas
+              id="astro_canvas"
+              data-engine="three.js r160"
+              width="612"
+              height="611"
+              style="touch-action: none"
+            ></canvas>
+            <div class="stage_hint">Pivoter à la souris</div>
+          </div>
+          <div class="about_panel">
+            <div class="container_config">
+              <!-- Pannel configuration casque -->
+              <span class="config_label">Casque</span>
+              <div class="config_options" id="config_helmet">
+                <button
+                  class="btn_config active"
+                  data-color="#ffffff"
+                  style="background: #ffffff"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#0a0a0a"
+                  style="
+                    background: #0a0a0a;
+                    border-color: rgba(255, 255, 255, 0.3);
+                  "
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#22d3ee"
+                  style="background: #22d3ee"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#f97316"
+                  style="background: #f97316"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#dc2626"
+                  style="background: #dc2626"
+                ></button>
+              </div>
+            </div>
+            <div class="container_config">
+              <!-- Pannel configuration Combinaison -->
+              <span class="config_label">Combinaison</span>
+              <div class="config_options" id="config_suit">
+                <button
+                  class="btn_config active"
+                  data-color="#e5e5e5"
+                  style="background: #e5e5e5"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#ffffff"
+                  style="background: #ffffff"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#737373"
+                  style="background: #737373"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#0a0a0a"
+                  style="
+                    background: #0a0a0a;
+                    border-color: rgba(255, 255, 255, 0.3);
+                  "
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#22d3ee"
+                  style="background: #22d3ee"
+                ></button>
+              </div>
+            </div>
+            <div class="container_config">
+              <!-- Pannel configuration objet -->
+              <span class="config_label">objet</span>
+              <div class="config_options" id="config_objet">
+                <button class="config_objet_btn btn_active" data-acc="none">
+                  Aucun
+                </button>
+                <button class="config_objet_btn" data-acc="flag">
+                  Drapeau
+                </button>
+                <button class="config_objet_btn" data-acc="jetpack">
+                  Jetpack
+                </button>
+                <button class="config_objet_btn" data-acc="star">Étoile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- ============ SECTION 3 — Portfolio (Dane) ============ -->
     <section class="section projects" id="projects">
       <canvas id="projects-bg"></canvas>
@@ -110,8 +274,8 @@
             <h3 class="proj-title">Issue 119</h3>
             <div class="proj-sub">Revue trimestrielle</div>
             <p class="proj-desc">
-              Publication long format pour photographes émergents —
-              typographie d'abord, images fortes, liens infinis.
+              Publication long format pour photographes émergents — typographie
+              d'abord, images fortes, liens infinis.
             </p>
           </div>
           <div class="proj-foot">
