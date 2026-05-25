@@ -1,0 +1,608 @@
+/* NAV */
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--mono);
+  padding: 26px 40px;
+  font-size: 0.6rem;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  align-items: center;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  mix-blend-mode: difference;
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav_link {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+  background: transparent;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+
+  max-width: 320px;
+}
+
+.nav .nav-logo {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* HERO */
+.hero_container {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+
+  z-index: 2;
+
+  padding: 110px 40px 40px;
+  min-height: 100vh;
+  pointer-events: none;
+
+  border-bottom: 1px solid var(--line);
+}
+
+/* Canvas Three.js en arrière-plan */
+#hero_background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero_name {
+  font-size: 20rem;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+  align-self: flex-start;
+  justify-self: flex-start;
+  font-family: var(--sans);
+}
+
+.hero_name-highlight {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 400;
+  font-family: var(--grot);
+}
+
+/* Container du contenu principal (bas de page) */
+.hero_content {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  right: 40px;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.hero_presentation {
+  display: flex;
+  flex-direction: column;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.7;
+
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  max-width: 320px;
+  line-height: 1.7;
+}
+
+.hero_title {
+  color: var(--ink);
+  font-family: var(--mono);
+}
+
+/* Badges / tags de compétences */
+
+/* Style des badges */
+.badge {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+  background: transparent;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+
+  max-width: 320px;
+}
+
+.hero_scroll {
+  font-family: var(--font-body);
+  color: var(--text-transparent-secondary);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+}
+
+.hero_scroll-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+}
+
+.hero_scroll-text::after {
+  content: "";
+  width: 60px;
+  height: 1px;
+  background: var(--ink-faint);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero_scroll-line {
+  width: 100%;
+  height: 1px;
+  background-color: var(--outline);
+  margin-top: 0.5rem;
+}
+
+/* ─────────────────── SECTION 3 — Projets ───────────────────────── */
+.projects {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Canvas WebGL en background absolu */
+#projects-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Contenu HTML au-dessus du canvas */
+.projects>.section-head,
+.projects>.proj-grid {
+  position: relative;
+  z-index: 1;
+}
+
+/* GRILLE 3 colonnes × 2 lignes */
+.proj-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-right: 0;
+}
+
+/* CARD */
+.proj-card {
+  position: relative;
+  padding: 32px 30px 30px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+.proj-card:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* Effet de cadre au hover */
+.proj-card::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
+  pointer-events: none;
+}
+.proj-card:hover::after { border-color: var(--ink); }
+
+.proj-card:hover::after {
+  border-color: var(--ink);
+}
+
+/* Au hover : numéro et flèche passent en cyan */
+.proj-card:hover .proj-num { color: var(--accent); }
+.proj-card:hover .proj-arrow {
+  color: var(--accent);
+  transform: translate(4px, -4px);
+}
+
+/* HAUT DE CARD : numéro + tag */
+.proj-row-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.proj-num {
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: 72px;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+
+.proj-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+}
+
+/* CORPS DE CARD */
+.proj-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.proj-title {
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.proj-sub {
+  font-family: var(--grot);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+
+.proj-desc {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  max-width: 38ch;
+}
+
+/* PIED DE CARD : année + flèche */
+.proj-foot {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.proj-year {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--ink-dim);
+}
+
+.proj-arrow {
+  font-family: var(--sans);
+  font-size: 18px;
+  color: var(--ink-dim);
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.about {
+  display: flex;
+  gap: 80px;
+  margin: 0 auto;
+  align-items: start;
+  max-width: 1400px;
+}
+
+.about_text {
+  font-family: var(--grot);
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.about_text em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.about_detail {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  margin-bottom: 14px;
+}
+
+.about_skills {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.skill:nth-child(even) {
+  padding-left: 24px;
+}
+
+.skill:nth-child(odd) {
+  padding-right: 24px;
+  border-right: 1px solid var(--line);
+}
+
+.skill {
+  padding: 14px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.skill span {
+  color: var(--ink);
+}
+
+.about_left {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding-top: 8px;
+}
+
+.about_stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+}
+
+.astro_square {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-bottom: 1px solid var(--line);
+}
+
+.stage_hint {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+
+.stage_hud {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.live {
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+.about_panel {
+  border-top: 1px solid var(--line);
+  padding: 24px 30px 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.container_config {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.config_options {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.config_label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.btn_config {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: transform .15s ease, border-color .15s ease;
+  position: relative;
+}
+
+.config_objet_btn {
+  padding: 7px 14px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.config_objet_btn:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn_active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.active {
+  border-color: var(--ink);
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 1px solid var(--ink);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+
+/* RESPONSIVE  */
+/* ─────────────────── RESPONSIVE HERO ───────────────────────── */
+@media (max-width: 768px) {
+  /* Nav : cache les liens, logo + date en plus grand */
+  .nav-links {
+    display: none;
+  }
+
+  .nav {
+    padding: 20px 24px;
+  }
+
+  .nav_link {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Hero : nom plus petit */
+  .hero_name {
+    font-size: 4.5rem;
+    letter-spacing: -0.04em;
+  }
+
+  /* Content : reste en row, juste padding réduit */
+  .hero_content {
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .hero_presentation {
+    max-width: 100%;
+  }
+}
+
+/* ─────────────────── RESPONSIVE PROJETS ───────────────────────── */
+@media (max-width: 1100px) {
+  .proj-grid { grid-template-columns: repeat(2, 1fr); }
+  .proj-num  { font-size: 56px; }
+  .proj-title { font-size: 26px; }
+}
+
+@media (max-width: 700px) {
+  .proj-grid { grid-template-columns: 1fr; }
+  .proj-card { min-height: 280px; padding: 24px 22px; }
+  .proj-num  { font-size: 48px; }
+}

@@ -1,72 +1,341 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>threejs</title>
+    <title>Portfolio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;900&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:ital,wght@0,300;0,400;1,400&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <section id="Config">
-      <div>
-        <span class="dot"></span>
-        <span>02 / Index</span>
+    <nav class="nav">
+      <div class="nav_link nav-logo"><p>ESGI · Studio</p></div>
+      <div class="nav-links">
+        <a href="#hero" class="nav_link">Index</a>
+        <a href="#projects" class="nav_link">Travaux</a>
+        <a href="#contact" class="nav_link">Contact</a>
       </div>
-      <div>
+      <div class="nav_link">2026</div>
+    </nav>
+
+    <!-- SECTION 1 — Hero  -->
+    <section class="hero_container section" id="hero">
+      <canvas id="hero_background"></canvas>
+
+      <h1 class="hero_name">ESGI<span class="hero_name-highlight">,</span></h1>
+
+      <div class="hero_content">
+        <div class="hero_presentation">
+          <p class="badge">
+            <span class="hero_title">Développeur créatif.</span> <br />
+            conception d'interfaces réflechies <br />
+            Entre code, matière et lumière.
+          </p>
+        </div>
+
+        <div class="hero_scroll">
+          <span class="hero_scroll-text">DÉFILER</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2 — Portfolio (Elias) ============ -->
+    <section class="section" id="Config">
+      <div class="section-head">
+        <span class="section-num">
+          <span class="dot"></span>
+          <span>02 / Index</span>
+        </span>
+        <h2 class="section-title">L'<em>artisanat</em><br />avant l'effet.</h2>
+      </div>
+
+      <div class="about">
         <!-- la section de gauche -->
-        <div>
-          <p>
+        <div class="about_left">
+          <p class="about_text">
             Neuf ans à construire des interfaces pour des institutions
             culturelles, la fintech et des studios indépendants — un travail
-            enraciné dans la précision, la typographie, et la discipline du
-            retrait.
+            enraciné dans la <em>précision</em>, la typographie, et la
+            discipline du retrait.
           </p>
-          <p>
+          <p class="about_detail">
             J'écris du code de production, dessine des shaders et livre des
             choses qui tiennent en plein jour. Je fais confiance à l'artisanat,
             aux délais et au système métrique. Actuellement en freelance depuis
             Lisbonne, disponible dans le monde entier.
           </p>
-          <p>
+          <p class="about_detail">
             Clients sélectionnés — Tate, Stripe, Linear, Arc, Mubi, Field,
             Pentagram, A24.
           </p>
 
           <!-- skill section -->
-          <div>
-            <div>
+          <div class="about_skills">
+            <div class="skill">
               <p>Three / WebGL</p>
               <span>09A</span>
             </div>
-            <div>
+            <div class="skill">
               <p>React / TS</p>
               <span>09A</span>
             </div>
-            <div>
+            <div class="skill">
               <p>Shaders GLSL</p>
               <span>05A</span>
             </div>
-            <div>
+            <div class="skill">
               <p>Motion</p>
               <span>07A</span>
             </div>
-            <div>
+            <div class="skill">
               <p>Design Système</p>
               <span>06A</span>
             </div>
-            <div>
+            <div class="skill">
               <p>Direction Typo</p>
               <span>04A</span>
             </div>
           </div>
         </div>
         <!-- Configurateur  -->
-        <div>
-          <canvas id="app"></canvas>
-          <div id="pannel"></div>
+        <div class="about_stage">
+          <div class="astro_square">
+            <div class="stage_hud">
+              <div class="live">SUJET — Aperçu en direct</div>
+              <div>MESH 0x4A2C · 1,408 polys</div>
+            </div>
+            <!-- Canvas astronaute -->
+            <canvas
+              id="astro_canvas"
+              data-engine="three.js r160"
+              width="612"
+              height="611"
+              style="touch-action: none"
+            ></canvas>
+            <div class="stage_hint">Pivoter à la souris</div>
+          </div>
+          <div class="about_panel">
+            <div class="container_config">
+              <!-- Pannel configuration casque -->
+              <span class="config_label">Casque</span>
+              <div class="config_options" id="config_helmet">
+                <button
+                  class="btn_config active"
+                  data-color="#ffffff"
+                  style="background: #ffffff"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#0a0a0a"
+                  style="
+                    background: #0a0a0a;
+                    border-color: rgba(255, 255, 255, 0.3);
+                  "
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#22d3ee"
+                  style="background: #22d3ee"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#f97316"
+                  style="background: #f97316"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#dc2626"
+                  style="background: #dc2626"
+                ></button>
+              </div>
+            </div>
+            <div class="container_config">
+              <!-- Pannel configuration Combinaison -->
+              <span class="config_label">Combinaison</span>
+              <div class="config_options" id="config_suit">
+                <button
+                  class="btn_config active"
+                  data-color="#e5e5e5"
+                  style="background: #e5e5e5"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#ffffff"
+                  style="background: #ffffff"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#737373"
+                  style="background: #737373"
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#0a0a0a"
+                  style="
+                    background: #0a0a0a;
+                    border-color: rgba(255, 255, 255, 0.3);
+                  "
+                ></button>
+                <button
+                  class="btn_config"
+                  data-color="#22d3ee"
+                  style="background: #22d3ee"
+                ></button>
+              </div>
+            </div>
+            <div class="container_config">
+              <!-- Pannel configuration objet -->
+              <span class="config_label">objet</span>
+              <div class="config_options" id="config_objet">
+                <button class="config_objet_btn btn_active" data-acc="none">
+                  Aucun
+                </button>
+                <button class="config_objet_btn" data-acc="flag">
+                  Drapeau
+                </button>
+                <button class="config_objet_btn" data-acc="jetpack">
+                  Jetpack
+                </button>
+                <button class="config_objet_btn" data-acc="star">Étoile</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
+    <!-- ============ SECTION 3 — Portfolio (Dane) ============ -->
+    <section class="section projects" id="projects">
+      <canvas id="projects-bg"></canvas>
+
+      <div class="section-head">
+        <span class="section-num"><span class="dot"></span>03 / Travaux</span>
+        <h2 class="section-title">PROJETS&nbsp;SÉLECTIONNÉS.</h2>
+      </div>
+
+      <!-- Grille des projets fictifs -->
+      <div class="proj-grid">
+        <article class="proj-card">
+          <div class="proj-row-top">
+            <span class="proj-num">01</span>
+            <span class="proj-tag">INTERACTIF</span>
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">Pale Blue</h3>
+            <div class="proj-sub">Tableau de bord climatique</div>
+            <p class="proj-desc">
+              Visualiseur de données atmosphériques sur 30 ans conçu pour les
+              chercheurs — retenue, typographie et silence avant tout.
+            </p>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-year">2026</span>
+            <span class="proj-arrow">↗</span>
+          </div>
+        </article>
+
+        <article class="proj-card">
+          <div class="proj-row-top">
+            <span class="proj-num">02</span>
+            <span class="proj-tag">IDENTITÉ</span>
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">Field Type</h3>
+            <div class="proj-sub">Famille variable</div>
+            <p class="proj-desc">
+              Une grotesque monospace dessinée pour la signalétique
+              industrielle, distribuée sous licence ouverte.
+            </p>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-year">2025</span>
+            <span class="proj-arrow">↗</span>
+          </div>
+        </article>
+
+        <article class="proj-card">
+          <div class="proj-row-top">
+            <span class="proj-num">03</span>
+            <span class="proj-tag">WEBGL</span>
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">Meridian</h3>
+            <div class="proj-sub">Commerce de luxe</div>
+            <p class="proj-desc">
+              Une expérience d'achat lente et réfléchie pour une maison de cuir
+              parisienne. Shaders sur mesure, aucun scroll-jacking.
+            </p>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-year">2025</span>
+            <span class="proj-arrow">↗</span>
+          </div>
+        </article>
+
+        <article class="proj-card">
+          <div class="proj-row-top">
+            <span class="proj-num">04</span>
+            <span class="proj-tag">PRODUIT</span>
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">Voyager</h3>
+            <div class="proj-sub">Système de design</div>
+            <p class="proj-desc">
+              Système de design de cent quarante tokens couvrant motion,
+              accessibilité et règles éditoriales pour la fintech.
+            </p>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-year">2024</span>
+            <span class="proj-arrow">↗</span>
+          </div>
+        </article>
+
+        <article class="proj-card">
+          <div class="proj-row-top">
+            <span class="proj-num">05</span>
+            <span class="proj-tag">ÉDITORIAL</span>
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">Issue 119</h3>
+            <div class="proj-sub">Revue trimestrielle</div>
+            <p class="proj-desc">
+              Publication long format pour photographes émergents — typographie
+              d'abord, images fortes, liens infinis.
+            </p>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-year">2024</span>
+            <span class="proj-arrow">↗</span>
+          </div>
+        </article>
+
+        <article class="proj-card">
+          <div class="proj-row-top">
+            <span class="proj-num">06</span>
+            <span class="proj-tag">EXPOSITION</span>
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">Black Box</h3>
+            <div class="proj-sub">Installation générative</div>
+            <p class="proj-desc">
+              Sculpture lumineuse audio-réactive en direct pour le Centre
+              Pompidou — 18 nuits, trois projecteurs, un shader.
+            </p>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-year">2023</span>
+            <span class="proj-arrow">↗</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
