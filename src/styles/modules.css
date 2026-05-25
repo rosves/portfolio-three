@@ -1,3 +1,178 @@
+/* NAV */
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--mono);
+  padding: 26px 40px;
+  font-size: 0.6rem;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  align-items: center;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  mix-blend-mode: difference;
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav_link {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+  background: transparent;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+
+  max-width: 320px;
+}
+
+.nav .nav-logo {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* HERO */
+.hero_container {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+
+  z-index: 2;
+
+  padding: 110px 40px 40px;
+  min-height: 100vh;
+  pointer-events: none;
+
+  border-bottom: 1px solid var(--line);
+}
+
+/* Canvas Three.js en arrière-plan */
+#hero_background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero_name {
+  font-size: 20rem;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+  align-self: flex-start;
+  justify-self: flex-start;
+  font-family: var(--sans);
+}
+
+.hero_name-highlight {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 400;
+  font-family: var(--grot);
+}
+
+/* Container du contenu principal (bas de page) */
+.hero_content {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  right: 40px;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.hero_presentation {
+  display: flex;
+  flex-direction: column;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.7;
+
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  max-width: 320px;
+  line-height: 1.7;
+}
+
+.hero_title {
+  color: var(--ink);
+  font-family: var(--mono);
+}
+
+/* Badges / tags de compétences */
+
+/* Style des badges */
+.badge {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+  background: transparent;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+
+  max-width: 320px;
+}
+
+.hero_scroll {
+  font-family: var(--font-body);
+  color: var(--text-transparent-secondary);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+}
+
+.hero_scroll-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+}
+
+.hero_scroll-text::after {
+  content: "";
+  width: 60px;
+  height: 1px;
+  background: var(--ink-faint);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero_scroll-line {
+  width: 100%;
+  height: 1px;
+  background-color: var(--outline);
+  margin-top: 0.5rem;
+}
+
 /* ─────────────────── SECTION 3 — Projets ───────────────────────── */
 .projects {
   position: relative;
@@ -56,7 +231,7 @@
 
 /* Effet de cadre au hover */
 .proj-card::after {
-  content: '';
+  content: "";
   position: absolute;
   top: -1px;
   left: -1px;
@@ -66,10 +241,14 @@
   transition: border-color 0.3s ease;
   pointer-events: none;
 }
-.proj-card:hover::after { border-color: var(--ink); }
+.proj-card:hover::after {
+  border-color: var(--ink);
+}
 
 /* Au hover : numéro et flèche passent en cyan */
-.proj-card:hover .proj-num { color: var(--accent); }
+.proj-card:hover .proj-num {
+  color: var(--accent);
+}
 .proj-card:hover .proj-arrow {
   color: var(--accent);
   transform: translate(4px, -4px);
@@ -162,18 +341,69 @@
   font-family: var(--sans);
   font-size: 18px;
   color: var(--ink-dim);
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
-/* RESPONSIVE  */
+/* ─────────────────── RESPONSIVE HERO ───────────────────────── */
+@media (max-width: 768px) {
+  /* Nav : cache les liens, logo + date en plus grand */
+  .nav-links {
+    display: none;
+  }
+
+  .nav {
+    padding: 20px 24px;
+  }
+
+  .nav_link {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Hero : nom plus petit */
+  .hero_name {
+    font-size: 4.5rem;
+    letter-spacing: -0.04em;
+  }
+
+  /* Content : reste en row, juste padding réduit */
+  .hero_content {
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .hero_presentation {
+    max-width: 100%;
+  }
+}
+
+/* ─────────────────── RESPONSIVE PROJETS ───────────────────────── */
 @media (max-width: 1100px) {
-  .proj-grid { grid-template-columns: repeat(2, 1fr); }
-  .proj-num  { font-size: 56px; }
-  .proj-title { font-size: 26px; }
+  .proj-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .proj-num {
+    font-size: 56px;
+  }
+  .proj-title {
+    font-size: 26px;
+  }
 }
 
 @media (max-width: 700px) {
-  .proj-grid { grid-template-columns: 1fr; }
-  .proj-card { min-height: 280px; padding: 24px 22px; }
-  .proj-num  { font-size: 48px; }
+  .proj-grid {
+    grid-template-columns: 1fr;
+  }
+  .proj-card {
+    min-height: 280px;
+    padding: 24px 22px;
+  }
+  .proj-num {
+    font-size: 48px;
+  }
 }
