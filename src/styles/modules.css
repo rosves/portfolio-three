@@ -241,14 +241,20 @@
   transition: border-color 0.3s ease;
   pointer-events: none;
 }
-.proj-card:hover::after { border-color: var(--ink); }
+
+.proj-card:hover::after {
+  border-color: var(--ink);
+}
 
 .proj-card:hover::after {
   border-color: var(--ink);
 }
 
 /* Au hover : numéro et flèche passent en cyan */
-.proj-card:hover .proj-num { color: var(--accent); }
+.proj-card:hover .proj-num {
+  color: var(--accent);
+}
+
 .proj-card:hover .proj-arrow {
   color: var(--accent);
   transform: translate(4px, -4px);
@@ -346,6 +352,8 @@
     color 0.3s ease;
 }
 
+/* ─────────────────── SECTION 2 — configurateur ───────────────────────── */
+
 .about {
   display: flex;
   gap: 80px;
@@ -429,8 +437,13 @@
 .astro_square {
   position: relative;
   aspect-ratio: 1 / 1;
-  width: 100%;
+  width: 600px;
+  height: 100%;
   border-bottom: 1px solid var(--line);
+}
+
+.astro_square canvas {
+  width: 100%;
 }
 
 .stage_hint {
@@ -560,6 +573,7 @@
 /* RESPONSIVE  */
 /* ─────────────────── RESPONSIVE HERO ───────────────────────── */
 @media (max-width: 768px) {
+
   /* Nav : cache les liens, logo + date en plus grand */
   .nav-links {
     display: none;
@@ -594,15 +608,57 @@
   }
 }
 
+/* ─────────────────── RESPONSIVE CONFIGURATEUR ───────────────────────── */
+@media (max-width: 1200px) {
+  .astro_square {
+    width: 450px;
+  }
+}
+
+@media (max-width: 850px) {
+
+  .about {
+    flex-direction: column;
+  }
+
+  .astro_square {
+    width: 100%;
+  }
+
+  .about_stage {
+    align-self: center;
+    width: 90%;
+  }
+}
+
+
+
 /* ─────────────────── RESPONSIVE PROJETS ───────────────────────── */
 @media (max-width: 1100px) {
-  .proj-grid { grid-template-columns: repeat(2, 1fr); }
-  .proj-num  { font-size: 56px; }
-  .proj-title { font-size: 26px; }
+  .proj-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .proj-num {
+    font-size: 56px;
+  }
+
+  .proj-title {
+    font-size: 26px;
+  }
 }
 
 @media (max-width: 700px) {
-  .proj-grid { grid-template-columns: 1fr; }
-  .proj-card { min-height: 280px; padding: 24px 22px; }
-  .proj-num  { font-size: 48px; }
+  .proj-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proj-card {
+    min-height: 280px;
+    padding: 24px 22px;
+  }
+
+  .proj-num {
+    font-size: 48px;
+  }
 }
