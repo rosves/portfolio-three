@@ -4,6 +4,8 @@ import { createScene } from "../core/scene.js";
 import { createSizes } from "../core/sizes.js";
 
 export function initHeroSection(canvas) {
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
   // 1. Setup renderer
   const renderer = createRenderer(canvas, {
     clearColor: 0x0a0a0a, // Fond noir 
@@ -19,7 +21,8 @@ export function initHeroSection(canvas) {
   });
 
   // 3. Créer des particules
-  const particlesCount = 2000;
+  // Mobile: on réduit la densité pour stabiliser les FPS.
+  const particlesCount = isMobile ? 1100 : 2000;
   const positions = new Float32Array(particlesCount * 3);
   const colors = new Float32Array(particlesCount * 3);
 
@@ -55,7 +58,8 @@ export function initHeroSection(canvas) {
   scene.add(particles);
 
   // 4. Créer la météorite LOW-POLY
-  const meteorGeometry = new THREE.IcosahedronGeometry(12, 4);
+  // Moins de subdivisions sur mobile => beaucoup moins de triangles.
+  const meteorGeometry = new THREE.IcosahedronGeometry(12, isMobile ? 3 : 4);
 
   const posAttr = meteorGeometry.attributes.position;
 
@@ -170,20 +174,22 @@ export function initHeroSection(canvas) {
     updateMeteorPosition(w);
   });
 
-  // 5. Animation loop
-  const clock = new THREE.Clock();
+  // 5. Animation loop (Clock deprecated -> timer basé sur performance.now)
+  const startTime = performance.now();
   let raf = 0;
 
   updateMeteorPosition(canvas.clientWidth);
 
   let mx = 0, my = 0, tx = 0, ty = 0;
-  window.addEventListener("mousemove", (e) => {
+  // pointermove fonctionne souris + tactile (plus propre pour mobile/tablette).
+  const onPointerMove = (e) => {
     mx = e.clientX / window.innerWidth - 0.5;
     my = e.clientY / window.innerHeight - 0.5;
-  });
+  };
+  window.addEventListener("pointermove", onPointerMove, { passive: true });
 
   function tick() {
-    const t = clock.getElapsedTime();
+    const t = (performance.now() - startTime) / 1000;
 
     // Lissage souris 
     tx += (mx - tx) * 0.04;
@@ -205,6 +211,7 @@ export function initHeroSection(canvas) {
   return {
     dispose() {
       cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onPointerMove);
       sizes.dispose();
       renderer.dispose();
     },

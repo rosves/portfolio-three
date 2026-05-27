@@ -128,6 +128,7 @@ function buildStars(count, radiusRange, sizeRange) {
 // ──────────────────────────────────────────────────────────────────────────────
 
 export function initParticlesSection(canvas, pointerTarget) {
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
   const renderer = createRenderer(canvas, { clearColor: 0x000000, exposure: 1.0 });
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -139,7 +140,9 @@ export function initParticlesSection(canvas, pointerTarget) {
   });
 
   //  2. Layer "stars" — 5000 étoiles aux couleurs naturelles 
-  const starsGeom = buildStars(5000, [30, 100], [1.0, 3.5]);
+  // Densité réduite sur mobile pour économiser GPU/batterie.
+  const starCount = isMobile ? 2600 : 5000;
+  const starsGeom = buildStars(starCount, [30, 100], [1.0, 3.5]);
   const starsMat  = new THREE.ShaderMaterial({
     vertexShader: VERT,
     fragmentShader: FRAG,
@@ -156,9 +159,9 @@ export function initParticlesSection(canvas, pointerTarget) {
 
   //  3. Post-processing — bloom subtil 
   const { composer, bloom } = createComposer(renderer, scene, camera, {
-    bloomStrength: 0.7,
+    bloomStrength: isMobile ? 0.5 : 0.7,
     bloomRadius: 0.55,
-    bloomThreshold: 0.28,
+    bloomThreshold: isMobile ? 0.35 : 0.28,
   });
 
   //  4. Resize 
@@ -181,13 +184,16 @@ export function initParticlesSection(canvas, pointerTarget) {
     mouse.ty = (e.clientY - r.top) / r.height - 0.5;
   });
 
-  //  6. Boucle de rendu 
-  const clock = new THREE.Clock();
+  //  6. Boucle de rendu (Clock deprecated -> timer maison)
+  const startTime = performance.now();
+  let prevTime = startTime;
   let raf = 0;
 
   function tick() {
-    const dt = clock.getDelta();
-    const t  = clock.getElapsedTime();
+    const now = performance.now();
+    const dt = (now - prevTime) / 1000;
+    const t = (now - startTime) / 1000;
+    prevTime = now;
 
     // Update du temps : scintillement
     starsMat.uniforms.uTime.value = t;

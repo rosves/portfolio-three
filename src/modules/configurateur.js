@@ -36,7 +36,14 @@ import { createSizes } from "../core/sizes.js";
 // -------------------------------------------------------------
 //  EXPORT PRINCIPAL — appelé depuis main.js
 // -------------------------------------------------------------
-export function initConfigurator() {
+export function initConfigurator(options = {}) {
+  // Callbacks optionnels fournis par main.js pour synchroniser l'UI
+  // externe (ici: l'écran de chargement) avec l'état réel du GLB.
+  const onProgress =
+    typeof options.onProgress === "function" ? options.onProgress : () => {};
+  const onReady =
+    typeof options.onReady === "function" ? options.onReady : () => {};
+
   // ── Récupération du canvas HTML ─────────────────────────────
   // Le <canvas id="astro_canvas"> est la surface WebGL.
   const canvas = document.getElementById("astro_canvas");
@@ -158,6 +165,21 @@ export function initConfigurator() {
 
   let modelGroup = null; // référence au groupe racine gltf.scene
 
+  function countTriangles(root) {
+    let triangles = 0;
+    root.traverse((node) => {
+      if (!node.isMesh || !node.geometry) return;
+      const index = node.geometry.index;
+      const pos = node.geometry.attributes?.position;
+      if (index?.count) {
+        triangles += index.count / 3;
+      } else if (pos?.count) {
+        triangles += pos.count / 3;
+      }
+    });
+    return Math.round(triangles);
+  }
+
   const loader = new GLTFLoader();
 
   loader.load(
@@ -234,6 +256,7 @@ export function initConfigurator() {
         helmet: parts.helmet.length + " mesh(es)",
         suit: parts.suit.length + " mesh(es)",
         accNodes: Object.keys(accNodes).filter((k) => accNodes[k]),
+        triangles: countTriangles(modelGroup),
       });
 
       // -- Animation d'entrée GSAP ----------------------------
@@ -248,13 +271,19 @@ export function initConfigurator() {
         duration: 1.4,
         ease: "power3.out",
       });
+
+      // Informe le module loader que le modèle est prêt.
+      onReady();
     },
 
     // ── Progression ──────────────────────────────────────────
     (xhr) => {
       if (xhr.total > 0) {
+        const ratio = xhr.loaded / xhr.total;
+        // Informe le loader de la progression (0 -> 1).
+        onProgress(ratio);
         console.log(
-          `Chargement : ${Math.round((xhr.loaded / xhr.total) * 100)}%`,
+          `Chargement : ${Math.round(ratio * 100)}%`,
         );
       }
     },
