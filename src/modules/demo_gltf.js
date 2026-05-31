@@ -39,12 +39,77 @@ export function initDemoGltf() {
   fillLight.position.set(-3, 1, -2);
   scene.add(fillLight);
 
+  const parts = {
+    helmet:  [],
+    suit:    [],
+  };
+
+  const accNodes = {
+    flag:    null,
+    jetpack: null,
+    star:    null,
+  };
+
   //  TODO 1 : Importer et instancier GLTFLoader
-  
+  const loader = new GLTFLoader();
 
   //  TODO 2 : Charger /astronaut.glb avec loader.load()
-
-  //  TODO 4 : traverse() pour inspecter les noms
+  loader.load(
+    "/astronaut.glb",
+    (gltf) => {
+      const model = gltf.scene;
+      const box   = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      const size   = box.getSize(new THREE.Vector3());
+      const scale  = 3 / Math.max(size.x, size.y, size.z);
+      model.scale.setScalar(scale);
+      model.position.sub(center.multiplyScalar(scale));
+      scene.add(model);
+  
+      // TODO 4 — traverse
+      model.traverse((node) => {
+        if (!node.isMesh) return;
+        console.log(node.name);
+        node.material = node.material.clone();
+        node.castShadow    = true;
+        node.receiveShadow = true;
+  
+        const nodeName   = node.name.toLowerCase();
+        const parentName = (node.parent?.name ?? "").toLowerCase();
+  
+        if (nodeName === "helmet") {
+          parts.helmet.push(node);
+        } else if (
+          nodeName === "torso"      ||
+          parentName === "arm_left"  ||
+          parentName === "arm_right" ||
+          parentName === "leg_left"  ||
+          parentName === "leg_right"
+        ) {
+          parts.suit.push(node);
+        }
+  
+        model.traverse((node) => {
+          if (node.name === "flag")     accNodes.flag    = node;
+          if (node.name === "backpack") accNodes.jetpack = node;
+          if (node.name === "star")     accNodes.star    = node;
+        });
+  
+        // On les masque par défaut
+        if (accNodes.flag)    accNodes.flag.visible    = false;
+        if (accNodes.jetpack) accNodes.jetpack.visible = false;
+        if (accNodes.star)    accNodes.star.visible    = false;
+  
+        console.log("parts :", parts);
+        console.log("accNodes :", accNodes);
+  
+      });
+    },
+    (xhr) => {
+      if (xhr.total > 0) console.log(Math.round(xhr.loaded / xhr.total * 100) + "%");
+    },
+    (error) => console.error(error)
+  );
 
   function animate() {
     requestAnimationFrame(animate);

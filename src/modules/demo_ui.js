@@ -4,6 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createRenderer } from "../core/renderer.js";
 import { createScene } from "../core/scene.js";
 import { createSizes } from "../core/sizes.js";
+import gsap from "gsap";
 
 export function initDemoUi() {
   const canvas = document.getElementById("astro_canvas");
@@ -57,6 +58,12 @@ export function initDemoUi() {
     suit: [],
   };
 
+  const accNodes = {
+    flag:    null,
+    jetpack: null,
+    star:    null,
+  };
+
   // Chargement du modèle
   const loader = new GLTFLoader();
 
@@ -98,10 +105,19 @@ export function initDemoUi() {
         }
       });
 
-      console.log("✅ Modèle chargé", {
-        helmet: parts.helmet.length + " mesh(es)",
-        suit: parts.suit.length + " mesh(es)",
+      model.traverse((node) => {
+        if (node.name === "flag")     accNodes.flag    = node;
+        if (node.name === "backpack") accNodes.jetpack = node;
+        if (node.name === "star")     accNodes.star    = node;
       });
+  
+      // On les masque par défaut
+      if (accNodes.flag)    accNodes.flag.visible    = false;
+      if (accNodes.jetpack) accNodes.jetpack.visible = false;
+      if (accNodes.star)    accNodes.star.visible    = false;
+
+      console.log("parts :", parts);
+      console.log("accNodes :", accNodes);
     },
     (xhr) => {
       if (xhr.total > 0) {
@@ -112,9 +128,61 @@ export function initDemoUi() {
   );
 
   //  TODO 1 : Brancher les boutons CASQUE (#config_helmet)
+  const helmetContainer = document.getElementById("config_helmet");
+  helmetContainer?.querySelectorAll(".btn_config").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      helmetContainer.querySelectorAll(".btn_config")
+        .forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      parts.helmet.forEach((mesh) => {
+        mesh.material.color.set(btn.dataset.color);
+      });
+    });
+  });
 
   //  TODO 2 : Brancher les boutons COMBINAISON (#config_suit)
+  const suitContainer = document.getElementById("config_suit");
+  suitContainer?.querySelectorAll(".btn_config").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      suitContainer.querySelectorAll(".btn_config")
+        .forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      parts.suit.forEach((mesh) => {
+        mesh.material.color.set(btn.dataset.color);
+      });
+    });
+  });
 
+  // TODO 3 — Boutons ACCESSOIRES
+  const accContainer = document.getElementById("config_objet");
+  function setAccessory(name) {
+    // Masquer tous les accessoires
+    Object.values(accNodes).forEach((node) => {
+      if (node) node.visible = false;
+    });
+
+    // Afficher celui demandé
+    if (name !== "none" && accNodes[name]) {
+      accNodes[name].visible = true;
+      // Animation d'apparition avec effet rebond
+      accNodes[name].scale.set(0, 0, 0);
+      gsap.to(accNodes[name].scale, {
+        x: 1, y: 1, z: 1,
+        duration: 0.45,
+        ease: "back.out(1.7)",
+      });
+    }
+  }
+
+  accContainer?.querySelectorAll(".config_objet_btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      accContainer.querySelectorAll(".config_objet_btn")
+        .forEach((b) => b.classList.remove("btn_active"));
+      btn.classList.add("btn_active");
+
+      setAccessory(btn.dataset.acc);
+    });
+  });
 
   function animate() {
     requestAnimationFrame(animate);
