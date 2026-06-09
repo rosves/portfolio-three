@@ -20,7 +20,7 @@ export function createSizes(target) {
 
   const ro = new ResizeObserver(notify);
   ro.observe(target.parentElement ?? target);
-  window.addEventListener('resize', notify);
+  window.addEventListener("resize", notify);
 
   return {
     on(fn) {
@@ -32,7 +32,7 @@ export function createSizes(target) {
     refresh: notify,
     dispose() {
       ro.disconnect();
-      window.removeEventListener('resize', notify);
+      window.removeEventListener("resize", notify);
       listeners.clear();
     },
   };
