@@ -12,7 +12,6 @@ const heroCanvas = document.getElementById("hero_background");
 const featuresCanvas = document.getElementById("projects-bg");
 const featuresSection = document.getElementById("projects");
 
-// Démarre l'écran de chargement Three.js dès l'init de la page.
 const loader = initLoadingScreen();
 const stopPerfMonitor = initPerformanceMonitor();
 
