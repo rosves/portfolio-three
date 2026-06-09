@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Export astronaute → GLB</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+  <style>
+    body { background: #0a0a0a; color: #fff; font-family: monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; gap: 1rem; }
+    canvas { border: 1px solid #333; }
+    button { background: #22d3ee; color: #000; border: none; padding: 12px 28px; font-family: monospace; font-size: 1rem; cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase; }
+    button:hover { background: #fff; }
+    #status { font-size: 0.75rem; color: #666; }
+  </style>
+</head>
+<body>
+  <canvas id="c" width="400" height="500"></canvas>
+  <button id="btn">Télécharger astronaute.glb</button>
+  <div id="status">Prévisualisation — cliquer pour exporter</div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+    // ─── Scene ───────────────────────────────────────────────────────────
+    const canvas = document.getElementById('c');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setClearColor(0x111111);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 400 / 500, 0.1, 100);
+    camera.position.set(0, 0.5, 6.2);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    controls.minPolarAngle = Math.PI * 0.25;
+    controls.maxPolarAngle = Math.PI * 0.78;
+    controls.target.set(0, 0.4, 0);
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.6;
+
+    // ─── Lights ──────────────────────────────────────────────────────────
+    const key = new THREE.DirectionalLight(0xffeacf, 4.2);
+    key.position.set(6, 2, 4);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x22d3ee, 0.6);
+    rim.position.set(-5, -1, -3);
+    scene.add(rim);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.08));
+
+    // ─── Build astronaut ─────────────────────────────────────────────────
+    const astro = new THREE.Group();
+    astro.name = 'astronaut';
+    scene.add(astro);
+
+    const helmetMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.35, metalness: 0.2, flatShading: true });
+    const visorMat  = new THREE.MeshStandardMaterial({ color: '#0a0a0a', roughness: 0.15, metalness: 0.6, emissive: '#0a1a22', emissiveIntensity: 0.2 });
+    const suitMat   = new THREE.MeshStandardMaterial({ color: '#e5e5e5', roughness: 0.6, metalness: 0.05, flatShading: true });
+    const detailMat = new THREE.MeshStandardMaterial({ color: '#0a0a0a', roughness: 0.5, metalness: 0.3, flatShading: true });
+    const accentMat = new THREE.MeshStandardMaterial({ color: '#22d3ee', roughness: 0.3, metalness: 0.4, emissive: '#22d3ee', emissiveIntensity: 0.5 });
+
+    // Helmet
+    const helmet = new THREE.Mesh(new THREE.IcosahedronGeometry(0.55, 1), helmetMat);
+    helmet.name = 'helmet';
+    helmet.position.y = 1.45;
+    astro.add(helmet);
+
+    // Visor
+    const visor = new THREE.Mesh(new THREE.SphereGeometry(0.42, 8, 8, 0, Math.PI * 2, 0, Math.PI * 0.55), visorMat);
+    visor.name = 'visor';
+    visor.rotation.x = Math.PI * 0.4;
+    visor.position.set(0, 1.45, 0.15);
+    astro.add(visor);
+
+    // Helmet trim
+    const trim = new THREE.Mesh(new THREE.TorusGeometry(0.52, 0.04, 6, 16), detailMat);
+    trim.name = 'trim';
+    trim.rotation.x = Math.PI / 2;
+    trim.position.y = 1.18;
+    astro.add(trim);
+
+    // Torso
+    const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.5, 0.95, 8, 1), suitMat);
+    torso.name = 'torso';
+    torso.position.y = 0.55;
+    astro.add(torso);
+
+    // Hip
+    const hip = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.4, 0.18, 8), detailMat);
+    hip.name = 'hip';
+    hip.position.y = 0.07;
+    astro.add(hip);
+
+    // Chest panel
+    const panel = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.28, 0.05), detailMat);
+    panel.name = 'chest_panel';
+    panel.position.set(0, 0.65, 0.45);
+    astro.add(panel);
+
+    // Panel lights
+    const lightColors = [0x22d3ee, 0xfbbf24, 0xec4899];
+    for (let i = 0; i < 3; i++) {
+      const dot = new THREE.Mesh(new THREE.IcosahedronGeometry(0.025, 0), new THREE.MeshBasicMaterial({ color: lightColors[i] }));
+      dot.position.set(-0.1 + i * 0.1, 0.75, 0.48);
+      astro.add(dot);
+    }
+
+    // Arms
+    function makeArm(side) {
+      const g = new THREE.Group();
+      g.name = side < 0 ? 'arm_left' : 'arm_right';
+      const upper = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.11, 0.5, 6), suitMat);
+      upper.position.y = -0.25;
+      g.add(upper);
+      const shoulder = new THREE.Mesh(new THREE.IcosahedronGeometry(0.16, 0), suitMat);
+      g.add(shoulder);
+      const elbow = new THREE.Mesh(new THREE.IcosahedronGeometry(0.13, 0), detailMat);
+      elbow.position.y = -0.5;
+      g.add(elbow);
+      const lower = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.1, 0.42, 6), suitMat);
+      lower.position.y = -0.72;
+      g.add(lower);
+      const glove = new THREE.Mesh(new THREE.IcosahedronGeometry(0.14, 0), detailMat);
+      glove.name = 'glove';
+      glove.position.y = -0.97;
+      g.add(glove);
+      g.position.set(side * 0.5, 0.95, 0);
+      g.rotation.z = side * 0.2;
+      return { group: g, glove };
+    }
+    const armL = makeArm(-1);
+    const armR = makeArm(1);
+    astro.add(armL.group);
+    astro.add(armR.group);
+
+    // Legs
+    function makeLeg(side) {
+      const g = new THREE.Group();
+      g.name = side < 0 ? 'leg_left' : 'leg_right';
+      const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.14, 0.55, 6), suitMat);
+      thigh.position.y = -0.27;
+      g.add(thigh);
+      const knee = new THREE.Mesh(new THREE.IcosahedronGeometry(0.15, 0), detailMat);
+      knee.position.y = -0.55;
+      g.add(knee);
+      const shin = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.12, 0.48, 6), suitMat);
+      shin.position.y = -0.8;
+      g.add(shin);
+      const boot = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.18, 0.36), detailMat);
+      boot.position.set(0, -1.1, 0.05);
+      g.add(boot);
+      g.position.set(side * 0.2, 0.05, 0);
+      return g;
+    }
+    astro.add(makeLeg(-1));
+    astro.add(makeLeg(1));
+
+    // Backpack
+    const pack = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.7, 0.3), detailMat);
+    pack.name = 'backpack';
+    pack.position.set(0, 0.65, -0.45);
+    astro.add(pack);
+    const tank1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.6, 8), suitMat);
+    tank1.position.set(-0.12, 0.65, -0.55);
+    astro.add(tank1);
+    const tank2 = tank1.clone();
+    tank2.position.x = 0.12;
+    astro.add(tank2);
+
+    // Flag
+    const flagGroup = new THREE.Group();
+    flagGroup.name = 'flag';
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1.3, 6), new THREE.MeshStandardMaterial({ color: '#cccccc', metalness: 0.6, roughness: 0.4 }));
+    pole.position.y = -0.3;
+    flagGroup.add(pole);
+    const flagCloth = new THREE.Mesh(new THREE.PlaneGeometry(0.35, 0.22), new THREE.MeshStandardMaterial({ color: '#22d3ee', side: THREE.DoubleSide, roughness: 0.6 }));
+    flagCloth.position.set(0.18, 0.22, 0);
+    flagGroup.add(flagCloth);
+    flagGroup.position.set(0.66, 0.6, 0.05);
+    flagGroup.rotation.z = -0.1;
+    astro.add(flagGroup);
+
+    // Star (right hand accessory)
+    const starShape = new THREE.Shape();
+    for (let i = 0; i < 10; i++) {
+      const r = i % 2 === 0 ? 0.18 : 0.07;
+      const a = (i / 10) * Math.PI * 2 - Math.PI / 2;
+      if (i === 0) starShape.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+      else starShape.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+    }
+    starShape.closePath();
+    const starGeom = new THREE.ExtrudeGeometry(starShape, { depth: 0.04, bevelEnabled: false });
+    const starMesh = new THREE.Mesh(starGeom, new THREE.MeshStandardMaterial({ color: 0x22d3ee, emissive: 0x22d3ee, emissiveIntensity: 1.2, metalness: 0.6, roughness: 0.3 }));
+    starMesh.name = 'star';
+    starMesh.position.set(0.66, 0.05, 0.1);
+    astro.add(starMesh);
+
+    // ─── Render loop ─────────────────────────────────────────────────────
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // ─── Export ──────────────────────────────────────────────────────────
+    document.getElementById('btn').addEventListener('click', () => {
+      const status = document.getElementById('status');
+      status.textContent = 'Export en cours…';
+
+      const exporter = new GLTFExporter();
+      exporter.parse(
+        astro,
+        (glb) => {
+          const blob = new Blob([glb], { type: 'application/octet-stream' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'astronaut.glb';
+          a.click();
+          status.textContent = 'astronaut.glb téléchargé ✓';
+        },
+        (err) => { status.textContent = 'Erreur : ' + err; },
+        { binary: true }
+      );
+    });
+  </script>
+</body>
+</html>
