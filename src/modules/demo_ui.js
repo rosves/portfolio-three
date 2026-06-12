@@ -4,6 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createRenderer } from "../core/renderer.js";
 import { createScene } from "../core/scene.js";
 import { createSizes } from "../core/sizes.js";
+import gsap from "gsap";
 
 export function initDemoUi() {
   const canvas = document.getElementById("astro_canvas");
@@ -57,6 +58,12 @@ export function initDemoUi() {
     suit: [],
   };
 
+  const accNodes = {
+    flag:    null,
+    jetpack: null,
+    star:    null,
+  };
+
   // Chargement du modèle
   const loader = new GLTFLoader();
 
@@ -98,10 +105,22 @@ export function initDemoUi() {
         }
       });
 
+      model.traverse((node) => {
+        if (node.name === "flag")     accNodes.flag    = node;
+        if (node.name === "backpack") accNodes.jetpack = node;
+        if (node.name === "star")     accNodes.star    = node;
+      });
+  
+      // On les masque par défaut
+      if (accNodes.flag)    accNodes.flag.visible    = false;
+      if (accNodes.jetpack) accNodes.jetpack.visible = false;
+      if (accNodes.star)    accNodes.star.visible    = false;
+
       console.log("✅ Modèle chargé", {
         helmet: parts.helmet.length + " mesh(es)",
         suit: parts.suit.length + " mesh(es)",
       });
+      console.log("accNodes :", accNodes);
     },
     (xhr) => {
       if (xhr.total > 0) {
@@ -114,6 +133,8 @@ export function initDemoUi() {
   //  TODO 1 : Brancher les boutons CASQUE (#config_helmet)
 
   //  TODO 2 : Brancher les boutons COMBINAISON (#config_suit)
+
+  // TODO 3 — Boutons ACCESSOIRES
 
 
   function animate() {

@@ -44,7 +44,7 @@ export function initDemoGltf() {
 
   //  TODO 2 : Charger /astronaut.glb avec loader.load()
 
-  //  TODO 4 : traverse() pour inspecter les noms
+  //  TODO 3 : traverse() pour inspecter les noms
 
   function animate() {
     requestAnimationFrame(animate);
