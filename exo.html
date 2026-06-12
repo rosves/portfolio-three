@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercice — Configurateur Astronaute</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:       #0d0d0f;
+        --panel:    #131316;
+        --line:     #2a2a30;
+        --ink:      #e0e0e6;
+        --ink-dim:  #606070;
+        --ink-faint:#3a3a4a;
+        --accent:   #22d3ee;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: 'JetBrains Mono', monospace;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      
+      .about_stage {
+        display: flex;
+        flex-direction: row;
+        border: 1px solid var(--line);
+      }
+
+      
+      .astro_square {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        border-right: 1px solid var(--line);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .astro_square canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        cursor: grab;
+        touch-action: none;
+      }
+
+      .stage_hud {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        pointer-events: none;
+      }
+
+      .live {
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .live::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: blink 1.4s ease-in-out infinite;
+      }
+
+      .stage_hint {
+        position: absolute;
+        bottom: 18px;
+        right: 18px;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        pointer-events: none;
+      }
+
+      
+      .about_panel {
+        padding: 24px 30px 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background: var(--panel);
+        width: 240px;
+        justify-content: center;
+      }
+
+      .container_config {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .config_label {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+        min-width: 90px;
+      }
+
+      .config_options {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      
+      .btn_config {
+        width: 26px;
+        height: 26px;
+        border: 1px solid var(--line);
+        cursor: pointer;
+        transition: border-color .15s;
+        position: relative;
+      }
+
+      .btn_config.active {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent);
+      }
+
+      
+      .config_objet_btn {
+        padding: 7px 14px;
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--ink-dim);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all .2s;
+      }
+
+      .config_objet_btn:hover {
+        color: var(--ink);
+        border-color: var(--ink);
+      }
+
+      .btn_active {
+        background: var(--ink);
+        color: var(--bg);
+        border-color: var(--ink);
+      }
+
+      @keyframes blink {
+        50% { opacity: 0.25; }
+      }
+
+      
+      @media (max-width: 650px) {
+        .astro_square { width: 100vw; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="about_stage">
+
+      
+      <div class="astro_square">
+        <div class="stage_hud">
+          <div class="live">SUJET — Aperçu en direct</div>
+          <div>MESH 8X4A2C · 1,604 tris</div>
+        </div>
+        <canvas id="astro_canvas" data-engine="three.js"></canvas>
+        <div class="stage_hint">Pivoter à la souris</div>
+      </div>
+
+      
+      <div class="about_panel">
+
+        
+        <div class="container_config">
+          <span class="config_label">Casque</span>
+          <div class="config_options" id="config_helmet">
+            <button class="btn_config active" data-color="#ffffff" style="background:#ffffff"></button>
+            <button class="btn_config" data-color="#0a0a0a" style="background:#0a0a0a;border-color:rgba(255,255,255,0.2)"></button>
+            <button class="btn_config" data-color="#22d3ee" style="background:#22d3ee"></button>
+            <button class="btn_config" data-color="#f97316" style="background:#f97316"></button>
+            <button class="btn_config" data-color="#dc2626" style="background:#dc2626"></button>
+          </div>
+        </div>
+
+        
+        <div class="container_config">
+          <span class="config_label">Combinaison</span>
+          <div class="config_options" id="config_suit">
+            <button class="btn_config active" data-color="#e5e5e5" style="background:#e5e5e5"></button>
+            <button class="btn_config" data-color="#ffffff" style="background:#ffffff"></button>
+            <button class="btn_config" data-color="#737373" style="background:#737373"></button>
+            <button class="btn_config" data-color="#0a0a0a" style="background:#0a0a0a;border-color:rgba(255,255,255,0.2)"></button>
+            <button class="btn_config" data-color="#22d3ee" style="background:#22d3ee"></button>
+          </div>
+        </div>
+
+        
+        <div class="container_config">
+          <span class="config_label">Objet</span>
+          <div class="config_options" id="config_objet">
+            <button class="config_objet_btn btn_active" data-acc="none">Aucun</button>
+            <button class="config_objet_btn" data-acc="flag">Drapeau</button>
+            <button class="config_objet_btn" data-acc="jetpack">Jetpack</button>
+            <button class="config_objet_btn" data-acc="star">Étoile</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script type="module">
+      import { initConfigurator } from './src/modules/configurateur.js';
+      initConfigurator();
+    </script>
+
+  </body>
+</html>
